@@ -2,6 +2,13 @@
 
 
 
+## v0.2.0 (2024-06-02)
+
+### Feature
+
+* feat: vp9 encoding by default ([`688821a`](https://github.com/tutorintelligence/vpx-rtp-py/commit/688821ae53f917c3b85e833443eac12f45b39e73))
+
+
 ## v0.1.3 (2024-06-02)
 
 ### Fix
