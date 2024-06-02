@@ -2,6 +2,13 @@
 
 
 
+## v0.2.1 (2024-06-02)
+
+### Fix
+
+* fix: remove min/max bitrates from vp8/9 encoder ([`4d65fb6`](https://github.com/tutorintelligence/vpx-rtp-py/commit/4d65fb6898860ef7b3da3250a6292b428437d048))
+
+
 ## v0.2.0 (2024-06-02)
 
 ### Feature
