@@ -16,8 +16,6 @@ VIDEO_CLOCK_RATE = 90000
 VIDEO_TIME_BASE = fractions.Fraction(1, VIDEO_CLOCK_RATE)
 
 DEFAULT_BITRATE = 500000  # 500 kbps
-MIN_BITRATE = 250000  # 250 kbps
-MAX_BITRATE = 1500000  # 1.5 Mbps
 
 MAX_FRAME_RATE = 30
 PACKET_MAX = 1300
@@ -33,6 +31,11 @@ VP9_CODEC = RTCRtpCodecParameters(
     clockRate=VP8_CODEC.clockRate,
     payloadType=VP8_CODEC.payloadType,
 )
+
+
+class VpxCodec(Enum):
+    VP8 = VP8_CODEC
+    VP9 = VP9_CODEC
 
 
 def convert_timebase(
@@ -189,11 +192,6 @@ def _vpx_assert(err: int) -> None:
         raise Exception("libvpx error: " + reason.decode("utf8"))
 
 
-class VpxCodec(Enum):
-    VP8 = VP8_CODEC
-    VP9 = VP9_CODEC
-
-
 class Vp8Decoder:
     def __init__(self, codec: VpxCodec = VpxCodec.VP9) -> None:
         self.codec = ffi.new("vpx_codec_ctx_t *")
@@ -261,9 +259,6 @@ class Vp8Encoder:
     def __init__(
         self, codec: VpxCodec = VpxCodec.VP9, target_bitrate: int = DEFAULT_BITRATE
     ) -> None:
-        if target_bitrate < MIN_BITRATE or target_bitrate > MAX_BITRATE:
-            raise ValueError("Invalid target bitrate")
-
         match codec:
             case VpxCodec.VP8:
                 self.cx = lib.vpx_codec_vp8_cx()
@@ -410,7 +405,6 @@ class Vp8Encoder:
 
     @target_bitrate.setter
     def target_bitrate(self, bitrate: int) -> None:
-        bitrate = max(MIN_BITRATE, min(bitrate, MAX_BITRATE))
         if bitrate != self.__target_bitrate:
             self.__target_bitrate = bitrate
             self.__update_config_needed = True

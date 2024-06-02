@@ -60,7 +60,7 @@ DUCK_FLAG_FRAMES = generate_flag_frames()
 
 codec = VpxCodec.VP9
 
-video_encoder = Vp8Encoder(codec)
+video_encoder = Vp8Encoder(codec, target_bitrate=200000)
 video_decoder = Vp8Decoder(codec)
 
 pts_timestamp = 0
