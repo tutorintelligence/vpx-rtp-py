@@ -5,7 +5,6 @@ from struct import pack, unpack_from
 from typing import List, Tuple, Type, TypeVar, cast
 
 from av import VideoFrame
-from av.frame import Frame
 from av.packet import Packet
 
 from vpx_rtp.codecs._vpx import ffi, lib
@@ -51,12 +50,12 @@ def number_of_threads(pixels: int, cpus: int) -> int:
 class VpxPayloadDescriptor:
     def __init__(
         self,
-        partition_start,
-        partition_id,
-        picture_id=None,
-        tl0picidx=None,
-        tid=None,
-        keyidx=None,
+        partition_start: int,
+        partition_id: int,
+        picture_id: int | None = None,
+        tl0picidx: int | None = None,
+        tid: tuple[int, int] | None = None,
+        keyidx: int | None = None,
     ) -> None:
         self.partition_start = partition_start
         self.partition_id = partition_id
@@ -198,8 +197,8 @@ class Vp8Decoder:
     def __del__(self) -> None:
         lib.vpx_codec_destroy(self.codec)
 
-    def decode(self, encoded_frame: JitterFrame) -> List[Frame]:
-        frames: List[Frame] = []
+    def decode(self, encoded_frame: JitterFrame) -> list[VideoFrame]:
+        frames = list[VideoFrame]()
         result = lib.vpx_codec_decode(
             self.codec,
             encoded_frame.data,
@@ -260,9 +259,8 @@ class Vp8Encoder:
             lib.vpx_codec_destroy(self.codec)
 
     def encode(
-        self, frame: Frame, force_keyframe: bool = False
+        self, frame: VideoFrame, force_keyframe: bool = False
     ) -> Tuple[List[bytes], int]:
-        assert isinstance(frame, VideoFrame)
         if frame.format.name != "yuv420p":
             frame = frame.reformat(format="yuv420p")
 
@@ -371,6 +369,8 @@ class Vp8Encoder:
 
     def pack(self, packet: Packet) -> Tuple[List[bytes], int]:
         payloads = self._packetize(bytes(packet), self.picture_id)
+
+        assert packet.pts is not None, "Packet must have a PTS"
         timestamp = convert_timebase(packet.pts, packet.time_base, VIDEO_TIME_BASE)
         self.picture_id = (self.picture_id + 1) % (1 << 15)
         return payloads, timestamp

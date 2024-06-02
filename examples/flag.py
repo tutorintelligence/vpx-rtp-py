@@ -25,14 +25,14 @@ DUCK_JPEG_PATH = Path(__file__).parent / "duck.jpg"
 VIDEO_PTIME = 1 / 30  # 30fps
 
 
-def generate_flag_frames():
+def generate_flag_frames() -> list[VideoFrame]:
     height, width = 480, 640
 
     duck_np_array = cv2.imread(str(DUCK_JPEG_PATH))
     data_bgr = cv2.resize(duck_np_array, (width, height))
 
     # shrink and center it
-    M = np.float32([[0.5, 0, width / 4], [0, 0.5, height / 4]])
+    M = np.array([[0.5, 0, width / 4], [0, 0.5, height / 4]])
     data_bgr = cv2.warpAffine(data_bgr, M, (width, height))
 
     # compute animation
@@ -47,7 +47,8 @@ def generate_flag_frames():
         map_y = id_y + 10 * np.sin(omega * id_x + phase)
         frames.append(
             VideoFrame.from_ndarray(
-                cv2.remap(data_bgr, map_x, map_y, cv2.INTER_LINEAR), format="bgr24"
+                cv2.remap(data_bgr, map_x, map_y, cv2.INTER_LINEAR).astype(np.uint8),
+                format="bgr24",
             )
         )
 

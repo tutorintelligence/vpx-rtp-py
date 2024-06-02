@@ -3,6 +3,8 @@ from dataclasses import dataclass
 from struct import pack, unpack, unpack_from
 from typing import Any, List, Optional, Tuple
 
+from typing_extensions import Self
+
 from vpx_rtp.rtcrtpparameters import RTCRtpParameters
 
 # used for NACK and retransmission
@@ -92,7 +94,7 @@ class HeaderExtensionsMap:
                 values.transport_sequence_number = unpack("!H", x_value)[0]
         return values
 
-    def set(self, values: HeaderExtensions):
+    def set(self, values: HeaderExtensions) -> tuple[int, bytes]:
         extensions = []
         if values.mid is not None and self.__ids.mid:
             extensions.append((self.__ids.mid, values.mid.encode("utf8")))
@@ -259,6 +261,17 @@ class RtpPacket:
         self.extensions = HeaderExtensions()
         self.payload = payload
         self.padding_size = 0
+        self._parsed_data: bytes | None = None
+
+    @property
+    def _data(self) -> bytes:
+        if self._parsed_data is None:
+            raise ValueError("RTP payload has not been parsed")
+        return self._parsed_data
+
+    @_data.setter
+    def _data(self, value: bytes) -> None:
+        self._parsed_data = value
 
     def __repr__(self) -> str:
         return (
@@ -268,7 +281,9 @@ class RtpPacket:
         )
 
     @classmethod
-    def parse(cls, data: bytes, extensions_map=HeaderExtensionsMap()):
+    def parse(
+        cls, data: bytes, extensions_map: HeaderExtensionsMap = HeaderExtensionsMap()
+    ) -> Self:
         if len(data) < RTP_HEADER_LENGTH:
             raise ValueError(
                 f"RTP packet length is less than {RTP_HEADER_LENGTH} bytes"
@@ -321,7 +336,9 @@ class RtpPacket:
 
         return packet
 
-    def serialize(self, extensions_map=HeaderExtensionsMap()) -> bytes:
+    def serialize(
+        self, extensions_map: HeaderExtensionsMap = HeaderExtensionsMap()
+    ) -> bytes:
         extension_profile, extension_value = extensions_map.set(self.extensions)
         has_extension = bool(extension_value)
 

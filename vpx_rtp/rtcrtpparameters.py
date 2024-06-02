@@ -11,24 +11,24 @@ class RTCRtpCodecParameters:
     codec settings.
     """
 
-    mimeType: str
-    "The codec MIME media type/subtype, for instance `'audio/PCMU'`."
-    clockRate: int
-    "The codec clock rate expressed in Hertz."
-    channels: Optional[int] = None
-    "The number of channels supported (e.g. two for stereo)."
-    payloadType: Optional[int] = None
-    "The value that goes in the RTP Payload Type Field."
-    rtcpFeedback: List["RTCRtcpFeedback"] = field(default_factory=list)
-    "Transport layer and codec-specific feedback messages for this codec."
-    parameters: ParametersDict = field(default_factory=dict)
-    "Codec-specific parameters available for signaling."
+    mimeType: str  # The codec MIME media type/subtype, for instance `'audio/PCMU'`.
+    clockRate: int  # The codec clock rate expressed in Hertz.
+    payloadType: int  # The value that goes in the RTP Payload Type Field.
+    channels: Optional[
+        int
+    ] = None  # The number of channels supported (e.g. two for stereo).
+    rtcpFeedback: List["RTCRtcpFeedback"] = field(
+        default_factory=list
+    )  # Transport layer and codec-specific feedback messages for this codec.
+    parameters: ParametersDict = field(
+        default_factory=dict
+    )  # Codec-specific parameters available for signaling.
 
     @property
-    def name(self):
+    def name(self) -> str:
         return self.mimeType.split("/")[1]
 
-    def __str__(self):
+    def __str__(self) -> str:
         s = f"{self.name}/{self.clockRate}"
         if self.channels == 2:
             s += "/2"

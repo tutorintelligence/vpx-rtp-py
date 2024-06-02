@@ -67,6 +67,8 @@ class JitterBuffer:
         remove = 0
         timestamp = None
 
+        assert self._origin is not None, "origin must be set"
+
         for count in range(self.capacity):
             pos = (self._origin + count) % self._capacity
             packet = self._packets[pos]
@@ -98,7 +100,8 @@ class JitterBuffer:
 
     def remove(self, count: int) -> None:
         assert count <= self._capacity
-        for i in range(count):
+        assert self._origin is not None, "origin must be set"
+        for _ in range(count):
             pos = self._origin % self._capacity
             self._packets[pos] = None
             self._origin = uint16_add(self._origin, 1)
@@ -109,6 +112,7 @@ class JitterBuffer:
         to prevent sending corrupted frames to the decoder.
         """
         timestamp = None
+        assert self._origin is not None, "origin must be set"
         for i in range(self._capacity):
             pos = self._origin % self._capacity
             packet = self._packets[pos]
