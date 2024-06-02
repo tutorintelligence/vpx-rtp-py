@@ -1,0 +1,46 @@
+[tool.poetry]
+name = "vpx-rtp-py"
+version = "0.0.1"
+description = "asyncio client library for tcp modbus devices"
+authors = ["Josh Gruenstein <josh@tutorintelligence.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "vpx_rtp"}]
+include = ["vpx_rtp/*", "*.so","*.o"] # include cffi compiled files as otherwise gitignored
+
+[tool.poetry.dependencies]
+python = "^3.10"
+av = "^12.1.0"
+
+[tool.poetry.dev-dependencies]
+flake8 = "^6.0.0"
+isort = "^5.10.1"
+black = "^22.3.0"
+mypy = "^1.7.0"
+pre-commit = "^2.19.0"
+
+[tool.poetry.group.dev.dependencies]
+matplotlib = "^3.9.0"
+opencv-python = "^4.9.0.80"
+numpy = "^1.26.4"
+types-cffi = "^1.16.0.20240331"
+cffi = "^1.16.0"
+
+[build-system]
+requires = ["poetry-core", "cffi"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+style = "poetry_scripts:style"
+
+[tool.semantic_release]
+version_variables = ["vpx_rtp/__init__.py:__version__"]
+version_toml = ["pyproject.toml:tool.poetry.version"]
+build_command = "pip install poetry cffi && poetry build"
+
+[tool.isort]
+profile = "black"
+
+[tool.poetry.build]
+generate-setup-file = false
+script = "build_cffi_bindings.py"
