@@ -2,6 +2,13 @@
 
 
 
+## v0.1.3 (2024-06-02)
+
+### Fix
+
+* fix: passes typing ([`43096f6`](https://github.com/tutorintelligence/vpx-rtp-py/commit/43096f6d242791dc363e4186432cd4fec1cd1ee1))
+
+
 ## v0.1.2 (2024-06-02)
 
 ### Fix
