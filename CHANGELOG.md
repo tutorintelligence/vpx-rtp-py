@@ -2,6 +2,13 @@
 
 
 
+## v0.1.2 (2024-06-02)
+
+### Fix
+
+* fix: finally include compiled artifacts in wheel ([`89faf8f`](https://github.com/tutorintelligence/vpx-rtp-py/commit/89faf8f6c5287c06d496b202899474a9bcf035a0))
+
+
 ## v0.1.1 (2024-06-02)
 
 ### Fix
