@@ -1,6 +1,7 @@
 import fractions
 import multiprocessing
 import random
+from enum import Enum
 from struct import pack, unpack_from
 from typing import List, Tuple, Type, TypeVar, cast
 
@@ -25,6 +26,12 @@ DESCRIPTOR_T = TypeVar("DESCRIPTOR_T", bound="VpxPayloadDescriptor")
 
 VP8_CODEC = RTCRtpCodecParameters(
     mimeType="video/VP8", clockRate=VIDEO_CLOCK_RATE, payloadType=100
+)
+
+VP9_CODEC = RTCRtpCodecParameters(
+    mimeType="video/VP9",
+    clockRate=VP8_CODEC.clockRate,
+    payloadType=VP8_CODEC.payloadType,
 )
 
 
@@ -182,12 +189,22 @@ def _vpx_assert(err: int) -> None:
         raise Exception("libvpx error: " + reason.decode("utf8"))
 
 
+class VpxCodec(Enum):
+    VP8 = VP8_CODEC
+    VP9 = VP9_CODEC
+
+
 class Vp8Decoder:
-    def __init__(self) -> None:
+    def __init__(self, codec: VpxCodec = VpxCodec.VP9) -> None:
         self.codec = ffi.new("vpx_codec_ctx_t *")
-        _vpx_assert(
-            lib.vpx_codec_dec_init(self.codec, lib.vpx_codec_vp8_dx(), ffi.NULL, 0)
-        )
+
+        match codec:
+            case VpxCodec.VP8:
+                dx = lib.vpx_codec_vp8_dx()
+            case VpxCodec.VP9:
+                dx = lib.vpx_codec_vp9_dx()
+
+        _vpx_assert(lib.vpx_codec_dec_init(self.codec, dx, ffi.NULL, 0))
 
         ppcfg = ffi.new("vp8_postproc_cfg_t *")
         ppcfg.post_proc_flag = lib.VP8_DEMACROBLOCK | lib.VP8_DEBLOCK
@@ -241,8 +258,17 @@ class Vp8Decoder:
 
 
 class Vp8Encoder:
-    def __init__(self) -> None:
-        self.cx = lib.vpx_codec_vp8_cx()
+    def __init__(
+        self, codec: VpxCodec = VpxCodec.VP9, target_bitrate: int = DEFAULT_BITRATE
+    ) -> None:
+        if target_bitrate < MIN_BITRATE or target_bitrate > MAX_BITRATE:
+            raise ValueError("Invalid target bitrate")
+
+        match codec:
+            case VpxCodec.VP8:
+                self.cx = lib.vpx_codec_vp8_cx()
+            case VpxCodec.VP9:
+                self.cx = lib.vpx_codec_vp9_cx()
 
         self.cfg = ffi.new("vpx_codec_enc_cfg_t *")
         lib.vpx_codec_enc_config_default(self.cx, self.cfg, 0)
@@ -251,7 +277,7 @@ class Vp8Encoder:
         self.codec = None
         self.picture_id = random.randint(0, (1 << 15) - 1)
         self.timestamp_increment = VIDEO_CLOCK_RATE // MAX_FRAME_RATE
-        self.__target_bitrate = DEFAULT_BITRATE
+        self.__target_bitrate = target_bitrate
         self.__update_config_needed = False
 
     def __del__(self) -> None:

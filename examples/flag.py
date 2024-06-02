@@ -11,9 +11,9 @@ from vpx_rtp.clock import current_ntp_time
 from vpx_rtp.codecs.vpx import (
     VIDEO_CLOCK_RATE,
     VIDEO_TIME_BASE,
-    VP8_CODEC,
     Vp8Decoder,
     Vp8Encoder,
+    VpxCodec,
     vp8_depayload,
 )
 from vpx_rtp.jitterbuffer import JitterBuffer
@@ -23,6 +23,7 @@ from vpx_rtp.utils import random16, random32, uint16_add
 DUCK_JPEG_PATH = Path(__file__).parent / "duck.jpg"
 
 VIDEO_PTIME = 1 / 30  # 30fps
+DROPPED_PACKET_PERCENTAGE = 0
 
 
 def generate_flag_frames() -> list[VideoFrame]:
@@ -57,8 +58,10 @@ def generate_flag_frames() -> list[VideoFrame]:
 
 DUCK_FLAG_FRAMES = generate_flag_frames()
 
-video_encoder = Vp8Encoder()
-video_decoder = Vp8Decoder()
+codec = VpxCodec.VP9
+
+video_encoder = Vp8Encoder(codec)
+video_decoder = Vp8Decoder(codec)
 
 pts_timestamp = 0
 _ssrc = random32()
@@ -67,8 +70,8 @@ sequence_number = random16()
 _jitter_buffer = JitterBuffer(capacity=128, is_video=True)
 
 received_frame_num = 0
-max_simulated_time = 20
-FORCE_KEYFRAME_EVERY_N = 30
+max_simulated_time = 5
+FORCE_KEYFRAME_EVERY_N = 100
 
 script_start_time = time.perf_counter()
 for send_frame_num in range(500):
@@ -94,7 +97,7 @@ for send_frame_num in range(500):
     wire_packet_bytes = []
     for i, payload in enumerate(_mid_encoding_video_packets):
         outgoing_packet = RtpPacket(
-            payload_type=VP8_CODEC.payloadType,
+            payload_type=codec.value.payloadType,
             sequence_number=sequence_number,
             timestamp=timestamp,
         )
@@ -120,7 +123,7 @@ for send_frame_num in range(500):
     start = time.perf_counter()
     received_video_frames: list[VideoFrame] = []
     for incoming_packet_bytes in wire_packet_bytes:
-        if random.random() < 0.01:
+        if random.random() < DROPPED_PACKET_PERCENTAGE:
             print("\n\n\nSIMULATED DROPPED PACKET\n\n\n")
             continue
         incoming_rtp_packet = RtpPacket.parse(incoming_packet_bytes)
