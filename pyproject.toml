@@ -5,8 +5,12 @@ description = "asyncio client library for tcp modbus devices"
 authors = ["Josh Gruenstein <josh@tutorintelligence.com>"]
 license = "MIT"
 readme = "README.md"
-packages = [{include = "vpx_rtp"}]
-include = ["vpx_rtp/*", "*.so","*.o"] # include cffi compiled files as otherwise gitignored
+packages = [{ include = "vpx_rtp" }]
+include = [ # include cffi compiled files in wheel as otherwise gitignored
+    { path = "vpx_rtp", format = ["sdist", "wheel"] },
+    { path = "vpx_rtp/codecs/*.so", format = "wheel" },
+    { path = "vpx_rtp/codecs/*.o", format = "wheel" },
+]
 
 [tool.poetry.dependencies]
 python = "^3.10"
