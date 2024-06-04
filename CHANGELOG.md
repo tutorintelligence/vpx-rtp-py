@@ -2,6 +2,21 @@
 
 
 
+## v0.3.0 (2024-06-04)
+
+### Chore
+
+* chore: Update black and sort out dev deps (#2) ([`504ee90`](https://github.com/tutorintelligence/vpx-rtp-py/commit/504ee90f7d43f66e6299ecf3c838bc8e93e7172a))
+
+### Feature
+
+* feat: Add utils for received stream stats (#3)
+
+* feat: Add received stream stats
+
+* feat: Make constructor parameter implicit ([`119f279`](https://github.com/tutorintelligence/vpx-rtp-py/commit/119f2795c38f806580147c0398cd4d439b8e5a64))
+
+
 ## v0.2.2 (2024-06-04)
 
 ### Documentation
