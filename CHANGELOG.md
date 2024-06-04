@@ -2,6 +2,17 @@
 
 
 
+## v0.3.2 (2024-06-04)
+
+### Documentation
+
+* docs: Add comments for stats properties ([`601d47b`](https://github.com/tutorintelligence/vpx-rtp-py/commit/601d47b07a7ce0af94d2f785a217caf6d122c31c))
+
+### Fix
+
+* fix: clock rate import path ([`59b89b9`](https://github.com/tutorintelligence/vpx-rtp-py/commit/59b89b983061e76000909fef29885267a97ae51a))
+
+
 ## v0.3.1 (2024-06-04)
 
 ### Fix
