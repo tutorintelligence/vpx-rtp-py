@@ -1,4 +1,5 @@
-from vpx_rtp.rtp import RtpPacket, VIDEO_CLOCK_RATE
+from vpx_rtp.codecs.vpx import VIDEO_CLOCK_RATE
+from vpx_rtp.rtp import RtpPacket
 
 # From https://github.com/aiortc/aiortc/blob/22699ea879f93b6d6dd1af4a200d37b9ff560870/src/aiortc/rtcrtpreceiver.py
 
