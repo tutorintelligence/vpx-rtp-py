@@ -66,4 +66,4 @@ class ReceivedRtpStreamStatistics:
 
     @property
     def packets_lost(self) -> int:
-        return clamp_packets_lost(self.packets_expected - self.packets_received)
+        return self.packets_expected - self.packets_received
