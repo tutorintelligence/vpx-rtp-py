@@ -46,6 +46,9 @@ class ReceivedRtpStreamStatistics:
 
     @property
     def fraction_lost(self) -> int:
+        """
+        Fraction of packets lost since last access of this property, multiplied by 256.
+        """
         expected_interval = self.packets_expected - self._expected_prior
         self._expected_prior = self.packets_expected
         received_interval = self.packets_received - self._received_prior
@@ -58,12 +61,24 @@ class ReceivedRtpStreamStatistics:
 
     @property
     def jitter(self) -> int:
+        """
+        An estimate of the statistical variance of the RTP data packet
+        interarrival time, measured in timestamp units and expressed as an
+        unsigned integer.
+        """
         return self._jitter_q4 >> 4
 
     @property
     def packets_expected(self) -> int:
+        """
+        Number of packets expected since the beginning of reception.
+        """
         return self.cycles + self.max_seq - self.base_seq + 1
 
     @property
     def packets_lost(self) -> int:
+        """
+        Number of packets lost since the beginning of reception, where the number of packets received
+        includes any which are late or duplicates.
+        """
         return self.packets_expected - self.packets_received
