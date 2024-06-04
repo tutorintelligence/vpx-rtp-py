@@ -1,16 +1,15 @@
-from vpx_rtp.rtp import RtpPacket
+from vpx_rtp.rtp import RtpPacket, VIDEO_CLOCK_RATE
 
 # From https://github.com/aiortc/aiortc/blob/22699ea879f93b6d6dd1af4a200d37b9ff560870/src/aiortc/rtcrtpreceiver.py
 
 class ReceivedRtpStreamStatistics:
-    def __init__(self, clockrate: int) -> None:
+    def __init__(self) -> None:
         self.base_seq: Optional[int] = None
         self.max_seq: Optional[int] = None
         self.cycles = 0
         self.packets_received = 0
 
         # jitter
-        self._clockrate = clockrate
         self._jitter_q4 = 0
         self._last_arrival: Optional[int] = None
         self._last_timestamp: Optional[int] = None
@@ -29,7 +28,7 @@ class ReceivedRtpStreamStatistics:
             self.base_seq = packet.sequence_number
 
         if in_order:
-            arrival = int(time.time() * self._clockrate)
+            arrival = int(time.time() * VIDEO_CLOCK_RATE)
 
             if self.max_seq is not None and packet.sequence_number < self.max_seq:
                 self.cycles += 1 << 16
