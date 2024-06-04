@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "vpx-rtp-py"
 version = "0.2.1"
-description = "asyncio client library for tcp modbus devices"
+description = "lightweight python interface for generating rtp streams using vpx codecs"
 authors = ["Josh Gruenstein <josh@tutorintelligence.com>"]
 license = "MIT"
 readme = "README.md"

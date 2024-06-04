@@ -282,6 +282,9 @@ class Vp8Encoder:
     def encode(
         self, frame: VideoFrame, force_keyframe: bool = False
     ) -> Tuple[List[bytes], int]:
+        """
+        :return: a list of packets encoding the image, and the timestamp in the video time base
+        """
         if frame.format.name != "yuv420p":
             frame = frame.reformat(format="yuv420p")
 
