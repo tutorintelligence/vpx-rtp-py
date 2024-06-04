@@ -16,19 +16,17 @@ include = [ # include cffi compiled files in wheel as otherwise gitignored
 python = "^3.10"
 av = "^12.1.0"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
+black = "^24.4.2"
+cffi = "^1.16.0"
+matplotlib = "^3.9.0"
+numpy = "^1.26.4"
+opencv-python = "^4.9.0.80"
+types-cffi = "^1.16.0.20240331"
 flake8 = "^6.0.0"
 isort = "^5.10.1"
-black = "^22.3.0"
 mypy = "^1.7.0"
 pre-commit = "^2.19.0"
-
-[tool.poetry.group.dev.dependencies]
-matplotlib = "^3.9.0"
-opencv-python = "^4.9.0.80"
-numpy = "^1.26.4"
-types-cffi = "^1.16.0.20240331"
-cffi = "^1.16.0"
 
 [build-system]
 requires = ["poetry-core", "cffi"]
