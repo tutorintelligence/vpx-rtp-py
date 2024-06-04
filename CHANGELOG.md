@@ -2,6 +2,17 @@
 
 
 
+## v0.2.2 (2024-06-04)
+
+### Documentation
+
+* docs: improve readme ([`f956e5c`](https://github.com/tutorintelligence/vpx-rtp-py/commit/f956e5c8fabd135f217517947e0ab408c10aa493))
+
+### Fix
+
+* fix: some docs (#1) ([`97b906b`](https://github.com/tutorintelligence/vpx-rtp-py/commit/97b906b6e21a5e36005dbdc619179e67e5b41ff4))
+
+
 ## v0.2.1 (2024-06-02)
 
 ### Fix
