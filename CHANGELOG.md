@@ -2,6 +2,13 @@
 
 
 
+## v0.3.1 (2024-06-04)
+
+### Fix
+
+* fix: remove undefined function ([`a77576b`](https://github.com/tutorintelligence/vpx-rtp-py/commit/a77576bb1fe6627b4de69c421a9986914b8d92ef))
+
+
 ## v0.3.0 (2024-06-04)
 
 ### Chore
