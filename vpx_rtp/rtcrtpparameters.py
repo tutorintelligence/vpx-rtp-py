@@ -14,9 +14,9 @@ class RTCRtpCodecParameters:
     mimeType: str  # The codec MIME media type/subtype, for instance `'audio/PCMU'`.
     clockRate: int  # The codec clock rate expressed in Hertz.
     payloadType: int  # The value that goes in the RTP Payload Type Field.
-    channels: Optional[
-        int
-    ] = None  # The number of channels supported (e.g. two for stereo).
+    channels: Optional[int] = (
+        None  # The number of channels supported (e.g. two for stereo).
+    )
     rtcpFeedback: List["RTCRtcpFeedback"] = field(
         default_factory=list
     )  # Transport layer and codec-specific feedback messages for this codec.
