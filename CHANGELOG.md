@@ -2,6 +2,13 @@
 
 
 
+## v0.3.3 (2024-06-05)
+
+### Fix
+
+* fix(stats): add missing imports ([`239144c`](https://github.com/tutorintelligence/vpx-rtp-py/commit/239144c6651c9aeb7ace888142cb0ecded31fbf7))
+
+
 ## v0.3.2 (2024-06-04)
 
 ### Documentation
