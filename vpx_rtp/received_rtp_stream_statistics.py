@@ -1,3 +1,6 @@
+import time
+from typing import Optional
+
 from vpx_rtp.codecs.vpx import VIDEO_CLOCK_RATE
 from vpx_rtp.rtp import RtpPacket
 
