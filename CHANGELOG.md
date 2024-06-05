@@ -2,6 +2,23 @@
 
 
 
+## v0.3.5 (2024-06-05)
+
+### Fix
+
+* fix(stats): Allow access to default values before first packet (#4)
+
+* Revert &#34;fix: Need a change to generate a new package&#34;
+
+This reverts commit 7cec89b646f7747043b372025050729ae2459600.
+
+* Revert &#34;refactor(stats): Adopt functional style and satisfy mypy&#34;
+
+This reverts commit 1263b787dcc5855a2d18cc0729d6ec028fff6981.
+
+* Satisfy mypy ([`1ed39c8`](https://github.com/tutorintelligence/vpx-rtp-py/commit/1ed39c8d0b2281e6133a9a3e829fbfcc7a77013c))
+
+
 ## v0.3.4 (2024-06-05)
 
 ### Chore
