@@ -22,6 +22,15 @@ class ReceivedRtpStreamStatistics:
     _last_timestamp: int
 
     @property
+    def jitter(self) -> int:
+        """
+        An estimate of the statistical variance of the RTP data packet
+        interarrival time, measured in timestamp units and expressed as an
+        unsigned integer.
+        """
+        return self._jitter_q4 >> 4
+
+    @property
     def packets_expected(self) -> int:
         """
         Number of packets expected since the beginning of reception.
@@ -35,15 +44,6 @@ class ReceivedRtpStreamStatistics:
         includes any which are late or duplicates.
         """
         return self.packets_expected - self.packets_received
-
-    @property
-    def jitter(self) -> int:
-        """
-        An estimate of the statistical variance of the RTP data packet
-        interarrival time, measured in timestamp units and expressed as an
-        unsigned integer.
-        """
-        return self._jitter_q4 >> 4
 
 
 def _get_arrival_number() -> int:
