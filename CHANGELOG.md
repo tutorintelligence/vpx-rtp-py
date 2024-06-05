@@ -2,6 +2,21 @@
 
 
 
+## v0.3.4 (2024-06-05)
+
+### Chore
+
+* chore: Add missing import and reformat ([`9e74133`](https://github.com/tutorintelligence/vpx-rtp-py/commit/9e74133090a5315765fbbeb2791383dc73e2b712))
+
+### Fix
+
+* fix: Need a change to generate a new package ([`7cec89b`](https://github.com/tutorintelligence/vpx-rtp-py/commit/7cec89b646f7747043b372025050729ae2459600))
+
+### Refactor
+
+* refactor(stats): Adopt functional style and satisfy mypy ([`1263b78`](https://github.com/tutorintelligence/vpx-rtp-py/commit/1263b787dcc5855a2d18cc0729d6ec028fff6981))
+
+
 ## v0.3.3 (2024-06-05)
 
 ### Fix
