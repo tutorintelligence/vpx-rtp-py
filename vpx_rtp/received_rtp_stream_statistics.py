@@ -40,7 +40,11 @@ class ReceivedRtpStreamStatistics:
                 self.cycles += 1 << 16
             self.max_seq = packet.sequence_number
 
-            if packet.timestamp != self._last_timestamp and self.packets_received > 1:
+            if (
+                self._last_arrival is not None
+                and self._last_timestamp is not None
+                and packet.timestamp != self._last_timestamp
+            ):
                 diff = abs(
                     (arrival - self._last_arrival)
                     - (packet.timestamp - self._last_timestamp)
@@ -79,7 +83,11 @@ class ReceivedRtpStreamStatistics:
         """
         Number of packets expected since the beginning of reception.
         """
-        return self.cycles + self.max_seq - self.base_seq + 1
+        return (
+            self.cycles + self.max_seq - self.base_seq + 1
+            if self.base_seq is not None and self.max_seq is not None
+            else 0
+        )
 
     @property
     def packets_lost(self) -> int:
