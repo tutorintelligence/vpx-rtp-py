@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "vpx-rtp-py"
-version = "0.3.5"
+version = "0.4.0"
 description = "lightweight python interface for generating rtp streams using vpx codecs"
 authors = ["Josh Gruenstein <josh@tutorintelligence.com>"]
 license = "MIT"
