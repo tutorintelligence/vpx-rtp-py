@@ -14,7 +14,7 @@ include = [ # include cffi compiled files in wheel as otherwise gitignored
 
 [tool.poetry.dependencies]
 python = "^3.10"
-av = "^12.1.0"
+av = ">=12.1.0"
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.4.2"
