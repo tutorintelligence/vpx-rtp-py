@@ -38,7 +38,7 @@ style = "poetry_scripts:style"
 [tool.semantic_release]
 version_variables = ["vpx_rtp/__init__.py:__version__"]
 version_toml = ["pyproject.toml:tool.poetry.version"]
-build_command = "pip install poetry cffi && poetry build"
+build_command = "pip install poetry cffi && poetry build -f sdist"
 
 [tool.isort]
 profile = "black"
